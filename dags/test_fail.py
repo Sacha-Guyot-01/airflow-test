@@ -4,6 +4,7 @@ from airflow.utils.trigger_rule import TriggerRule
 from datetime import datetime
 from random import randint
 
+DAG_NAME = "TEST_FAIL"
 
 def always_pass():
     print("Starting the DAG!")
@@ -26,11 +27,11 @@ def handle_failure():
 
 # Define the DAG
 with DAG(
-    dag_id="conditional_failure_branching",
+    dag_id=DAG_NAME,
     start_date=datetime(2023, 1, 1),
-    schedule_interval=None,
+    schedule=None,
     catchup=False,
-    tags=["example", "branching", "failure"],
+    tags=["test"],
 ) as dag:
 
     start_task = PythonOperator(
