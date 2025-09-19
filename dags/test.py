@@ -57,7 +57,7 @@ with DAG(
                 "useLegacySql": False,
             }
         },
-    location="EU",
+        location="europe-west9",
     )
 
 
