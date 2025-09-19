@@ -7,7 +7,7 @@ def task_one():
     print("✅ Task 1 completed")
 
 def task_two():
-    print("✅ Task 2 completed")
+    raise Exception("Test")
 
 def task_three():
     print("✅ Task 3 completed")
