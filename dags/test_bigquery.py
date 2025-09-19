@@ -3,7 +3,7 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from datetime import datetime
 
-DAG_NAME = "three_task_test"
+DAG_NAME = "TEST_BIGQUERY"
 
 # Harmless Python functions for each task
 def task_one():
