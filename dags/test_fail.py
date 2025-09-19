@@ -11,7 +11,7 @@ def always_pass():
 
 def fail_purposefully():
     if randint(0,1)==0:
-        print("failure (on purpose)"
+        print("failure (on purpose)")
         raise Exception("💥 This task failed on purpose!")
     else:
         print("success")
