@@ -16,7 +16,7 @@ def task_three():
 with DAG(
     dag_id="three_task_test",
     start_date=datetime(2023, 1, 1),
-    schedule_interval=None,  # Run manually
+    schedule=None,  # Run manually
     catchup=False,
     tags=["test"],
 ) as dag:
