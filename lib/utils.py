@@ -1,4 +1,4 @@
-import re
+import re, os
 
 def read_and_prepare(sql_file, **kwargs):
     content = open(sql_file).read()
@@ -7,10 +7,11 @@ def read_and_prepare(sql_file, **kwargs):
     return content
 
 def get_params(dag_name, **kwargs):
+    root_path = os.environ["PYTHONPATH"]
     root = dag_name.split("_")[0]
-    conf = open(f"../conf/{root.upper()}/{dag_name.upper()}.yaml").read()
+    conf = open(f"{root_path}/conf/{root.upper()}/{dag_name.upper()}.yaml").read()
     project = conf["project"]
     location = conf["location"]
     sa_key = None # get SA key from secret manager
     params = {"DAG":dag_name, "PROJECT":project, "LOCATION":location, **kwargs}
-    return [f"../sql/{root.upper()}/{dag_name.upper()}/", f"../conf/{root.upper()}/{dag_name.upper()}.yaml", sa_key, params]
+    return [f"{root_path}/sql/{root.upper()}/{dag_name.upper()}/", f"{root_path}/conf/{root.upper()}/{dag_name.upper()}.yaml", sa_key, params]
