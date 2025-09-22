@@ -15,5 +15,5 @@ def get_params(dag_name, **kwargs):
     project = conf["project"]
     location = conf["location"]
     sa_key = None # get SA key from secret manager
-    params = {"DAG":dag_name, **kwargs, **conf}
+    params = {"DAG_NAME":dag_name, **kwargs, **conf}
     return [f"{root_path}/sql/{root.upper()}/{dag_name.upper()}/", conf, sa_key, params]

@@ -59,5 +59,4 @@ bq_task = BigQueryInsertJobOperator(
     dag=dag
 )
 
-
 t1 >> t2 >> t3 >> bq_task
