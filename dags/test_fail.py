@@ -62,5 +62,4 @@ on_failure = PythonOperator(
 
 # DAG structure: start_task -> maybe_fail -> (on_success OR on_failure)
 start_task >> maybe_fail
-maybe_fail >> on_success
-maybe_fail >> on_failure
+maybe_fail >> [on_success, on_failure]

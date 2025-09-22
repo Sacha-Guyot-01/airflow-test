@@ -9,7 +9,8 @@ def read_and_prepare(sql_file, **kwargs):
 def get_params(dag_name, **kwargs):
     root_path = os.environ["PYTHONPATH"]
     root = dag_name.split("_")[0]
-    conf = yaml.load(f"{root_path}/conf/{root.upper()}/{dag_name.upper()}.yaml", Loader=yaml.SafeLoader)
+    conf = yaml.load(open(f"{root_path}/conf/{root.upper()}/{dag_name.upper()}.yaml").read(), Loader=yaml.SafeLoader)
+    print(conf)
     project = conf["project"]
     location = conf["location"]
     sa_key = None # get SA key from secret manager
