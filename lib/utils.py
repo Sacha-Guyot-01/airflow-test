@@ -1,9 +1,10 @@
 import re, os, yaml
 
-def read_and_prepare(sql_file, **kwargs):
+def read_and_prepare(sql_file, params=None):
     content = open(sql_file).read()
-    for k in kwargs.keys():
-        content = content.replace(f"@{k.upper()}@", kwargs[k])
+    if params:
+        for k in params.keys():
+            content = content.replace(f"@{k.upper()}@", params[k])
     return content
 
 def get_params(dag_name, **kwargs):
