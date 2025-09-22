@@ -2,8 +2,13 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from datetime import datetime
+from lib.utils import *
 
-DAG_NAME = "TEST_BIGQUERY"
+dag_name = "TEST_BIGQUERY"
+
+sql, conf, sa_key, params = get_params(dag_name)
+project = params["project"]
+location = params["location"]
 
 # Harmless Python functions for each task
 def task_one():
@@ -15,24 +20,14 @@ def task_two():
 def task_three():
     print("✅ Task 3 completed")
 
-bq_dml_sql = f"""MERGE INTO `mailovepoc`.TEST.T1 tgt
-             USING (SELECT '{DAG_NAME}' AS dag_name, CURRENT_TIMESTAMP AS last_run) AS src
-             ON tgt.dag_name = src.dag_name
-             WHEN MATCHED THEN UPDATE
-             SET tgt.last_run = src.last_run
-             WHEN NOT MATCHED BY TARGET THEN INSERT
-             (dag_name, last_run)
-             VALUES
-             (src.dag_name, src.last_run);"""
-
 # Define the DAG
-with DAG(
-    dag_id=DAG_NAME,
+dag = DAG(
+    dag_id=dag_name,
     start_date=datetime(2023, 1, 1),
     schedule=None,  # Run manually
     catchup=False,
-    tags=["test"],
-) as dag:
+    tags=["test"]
+)
 
     t1 = PythonOperator(
         task_id="task_one",
@@ -53,11 +48,11 @@ with DAG(
         task_id="bigquery_dml_task",
         configuration={
             "query": {
-                "query": bq_dml_sql,
+                "query": read_and_prepare(sql+"Q001.sql", params),
                 "useLegacySql": False,
             }
         },
-        location="europe-west9",
+        location=location,
     )
 
 

@@ -26,13 +26,13 @@ def handle_failure():
     print("❌ maybe_fail_task failed! Handling failure...")
 
 # Define the DAG
-with DAG(
+dag = DAG(
     dag_id=DAG_NAME,
     start_date=datetime(2023, 1, 1),
     schedule=None,
     catchup=False,
     tags=["test"],
-) as dag:
+)
 
     start_task = PythonOperator(
         task_id="start_task",
