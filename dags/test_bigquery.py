@@ -7,8 +7,8 @@ from lib.utils import *
 dag_name = "TEST_BIGQUERY"
 
 sql, conf, sa_key, params = get_params(dag_name)
-project = params["PROJECT"]
-location = params["LOCATION"]
+project = params["project"]
+location = params["location"]
 
 # Harmless Python functions for each task
 def task_one():
