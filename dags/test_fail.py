@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-from airflow.operators.email_operator import EmailOperator
+from airflow.operators.email import EmailOperator
 from airflow.utils.trigger_rule import TriggerRule
 from datetime import datetime
 from random import randint
