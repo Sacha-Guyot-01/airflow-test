@@ -29,31 +29,31 @@ dag = DAG(
     tags=["test"]
 )
 
-    t1 = PythonOperator(
-        task_id="task_one",
-        python_callable=task_one,
-    )
+t1 = PythonOperator(
+    task_id="task_one",
+    python_callable=task_one,
+)
 
-    t2 = PythonOperator(
-        task_id="task_two",
-        python_callable=task_two,
-    )
+t2 = PythonOperator(
+    task_id="task_two",
+    python_callable=task_two,
+)
 
-    t3 = PythonOperator(
-        task_id="task_three",
-        python_callable=task_three,
-    )
+t3 = PythonOperator(
+    task_id="task_three",
+    python_callable=task_three,
+)
 
-    bq_task = BigQueryInsertJobOperator(
-        task_id="bigquery_dml_task",
-        configuration={
-            "query": {
-                "query": read_and_prepare(sql+"Q001.sql", params),
-                "useLegacySql": False,
-            }
-        },
-        location=location,
-    )
+bq_task = BigQueryInsertJobOperator(
+    task_id="bigquery_dml_task",
+    configuration={
+        "query": {
+            "query": read_and_prepare(sql+"Q001.sql", params),
+            "useLegacySql": False,
+        }
+    },
+    location=location,
+)
 
 
-    t1 >> t2 >> t3 >> bq_task
+t1 >> t2 >> t3 >> bq_task
