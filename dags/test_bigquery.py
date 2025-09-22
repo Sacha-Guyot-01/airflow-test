@@ -32,16 +32,19 @@ dag = DAG(
 t1 = PythonOperator(
     task_id="task_one",
     python_callable=task_one,
+    dag=dag
 )
 
 t2 = PythonOperator(
     task_id="task_two",
     python_callable=task_two,
+    dag=dag
 )
 
 t3 = PythonOperator(
     task_id="task_three",
     python_callable=task_three,
+    dag=dag
 )
 
 bq_task = BigQueryInsertJobOperator(
@@ -53,6 +56,7 @@ bq_task = BigQueryInsertJobOperator(
         }
     },
     location=location,
+    dag=dag
 )
 
 
