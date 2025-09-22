@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.operators.email_operator import EmailOperator
 from airflow.utils.trigger_rule import TriggerRule
 from datetime import datetime
 from random import randint
@@ -9,7 +10,6 @@ DAG_NAME = "TEST_FAIL"
 def always_pass():
     print("Starting the DAG!")
 
-
 def fail_purposefully():
     if randint(0,1)==0:
         print("failure (on purpose)")
@@ -17,13 +17,9 @@ def fail_purposefully():
     else:
         print("success")
 
-
 def handle_success():
     print("✅ maybe_fail_task succeeded! (This should NOT run in this example)")
 
-
-def handle_failure():
-    print("❌ maybe_fail_task failed! Handling failure...")
 
 # Define the DAG
 dag = DAG(
@@ -53,9 +49,11 @@ on_success = PythonOperator(
     trigger_rule=TriggerRule.ALL_SUCCESS  # default
 )
 
-on_failure = PythonOperator(
-    task_id="on_failure_task",
-    python_callable=handle_failure,
+on_failure = EmailOperator(
+    task_id='on_failure_task',
+    to='sacha.guyot@pyl.tech',
+    subject='Airflow Email Test',
+    html_content='<h3>This is a test email sent from Airflow</h3>',
     dag=dag,
     trigger_rule=TriggerRule.ONE_FAILED  # runs if maybe_fail fails
 )
