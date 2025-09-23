@@ -18,7 +18,10 @@ def fail_purposefully():
         print("success")
 
 def handle_success():
-    print("✅ maybe_fail_task succeeded! (This should NOT run in this example)")
+    print("✅ maybe_fail_task succeeded!")
+
+def handle_failure():
+    print("❌ maybe_fail_task failed!")
 
 
 # Define the DAG
@@ -49,15 +52,22 @@ on_success = PythonOperator(
     trigger_rule=TriggerRule.ALL_SUCCESS  # default
 )
 
-on_failure = EmailOperator(
-    task_id='on_failure_task',
+on_failure = PythonOperator(
+    task_id="on_failure_task",
+    python_callable=handle_failure,
+    dag=dag,
+    trigger_rule=TriggerRule.ONE_FAILED  # runs if maybe_fail fails
+)
+
+mail = EmailOperator(
+    task_id='failure_mail_task',
     to='sacha.guyot@pyl.tech',
     subject='Airflow Email Test',
     html_content='<h3>This is a test email sent from Airflow</h3>',
-    dag=dag,
-    trigger_rule=TriggerRule.ONE_FAILED  # runs if maybe_fail fails
+    dag=dag
 )
 
 # DAG structure: start_task -> maybe_fail -> (on_success OR on_failure)
 start_task >> maybe_fail
 maybe_fail >> [on_success, on_failure]
+on_failure >> mail
