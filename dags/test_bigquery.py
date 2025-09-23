@@ -55,6 +55,7 @@ bq_task = BigQueryInsertJobOperator(
             "useLegacySql": False,
         }
     },
+    deferrable=True,
     location=location,
     dag=dag
 )
