@@ -56,6 +56,7 @@ bq_task = BigQueryInsertJobOperator(
         }
     },
     deferrable=True,
+    poll_interval=2,
     location=location,
     dag=dag
 )
